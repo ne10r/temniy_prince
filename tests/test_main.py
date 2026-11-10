@@ -17,17 +17,76 @@ def run_app(*args):
     )
 
 
-def test_successful_output():
-    """Print exactly four key-value settings."""
-    result = run_app()
+def test_successful_output(config_file, repository_server):
+    """Print direct dependencies from the configured release URL."""
+    base, routes, requested = repository_server
+    dependencies = ["urllib3<3,>=1.21.1", 'extra-lib; extra == "test"']
+    routes["/pypi/requests/2.32.3/json"] = (
+        200, {"info": {"requires_dist": dependencies}}
+    )
+    path = config_file(repository=base)
+    result = run_app("--config", str(path))
     assert result.returncode == 0
     assert result.stderr == ""
-    assert result.stdout.splitlines() == [
-        "package=requests",
-        "repository=https://pypi.org/pypi",
-        "test_mode=false",
-        "version=2.32.3",
-    ]
+    assert result.stdout.splitlines() == dependencies
+    assert requested == ["/pypi/requests/2.32.3/json"]
+
+
+def test_empty_release(config_file, repository_server):
+    """Explain when the release declares no dependencies."""
+    base, routes, _ = repository_server
+    routes["/pypi/requests/2.32.3/json"] = (200, {"info": {}})
+    result = run_app("--config", str(config_file(repository=base)))
+    assert result.returncode == 0
+    assert result.stdout == "No direct dependencies declared.\n"
+    assert result.stderr == ""
+
+
+@pytest.mark.parametrize("status,data,message", [
+    (404, {}, "Package or version not found"),
+    (503, {}, "Repository returned HTTP 503"),
+    (200, b"not-json", "Repository returned invalid JSON"),
+    (200, {"info": []}, "info object"),
+])
+def test_repository_error(
+    config_file, repository_server, status, data, message
+):
+    """Report repository errors without partial output or tracebacks."""
+    base, routes, _ = repository_server
+    routes["/pypi/requests/2.32.3/json"] = (status, data)
+    result = run_app("--config", str(config_file(repository=base)))
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert message in result.stderr
+    assert "Traceback" not in result.stderr
+
+
+def test_local_repository():
+    """Print only the direct test neighbours, without following B or C."""
+    result = run_app("--config", "configs/test.csv")
+    assert result.returncode == 0
+    assert result.stdout.splitlines() == ["B", "C"]
+    assert result.stderr == ""
+
+
+@pytest.mark.parametrize("version,dependency", [
+    ("1.0", "core<2"), ("2.0", "core>=2"),
+])
+def test_version_changes_dependencies(
+    config_file, repository_server, version, dependency
+):
+    """Select the requested release rather than the latest release."""
+    base, routes, requested = repository_server
+    for release, requirement in [("1.0", "core<2"), ("2.0", "core>=2")]:
+        routes[f"/pypi/requests/{release}/json"] = (
+            200, {"info": {"requires_dist": [requirement]}}
+        )
+    path = config_file(repository=base, version=version)
+    result = run_app("--config", str(path))
+    assert result.returncode == 0
+    assert result.stdout.splitlines() == [dependency]
+    assert result.stderr == ""
+    assert requested == [f"/pypi/requests/{version}/json"]
 
 
 @pytest.mark.parametrize("field,value", [
