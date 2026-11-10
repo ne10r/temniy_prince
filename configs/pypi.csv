@@ -1,0 +1,2 @@
+package,repository,test_mode,version
+requests,https://pypi.org/pypi,false,2.32.3
