@@ -8,7 +8,7 @@ from urllib.error import HTTPError, URLError
 import pytest
 
 from src.config import Config
-from src.repository import build_release_url, fetch_metadata
+from src.repository import REQUEST_TIMEOUT, build_release_url, fetch_metadata
 from src.repository import get_dependencies, parse_dependencies
 
 
@@ -39,7 +39,7 @@ def test_fetch_metadata(monkeypatch):
     request, timeout = calls[0]
     assert request.full_url == url
     assert request.get_header("Accept") == "application/json"
-    assert timeout == 10
+    assert timeout == REQUEST_TIMEOUT
 
 
 @pytest.mark.parametrize("error,message", [

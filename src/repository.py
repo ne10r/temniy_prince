@@ -1,6 +1,7 @@
 """Read direct dependencies from a Python package repository."""
 
 import json
+from http import HTTPStatus
 from http.client import HTTPException
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
@@ -26,7 +27,7 @@ def fetch_metadata(url: str) -> dict:
         with urlopen(request, timeout=REQUEST_TIMEOUT) as response:
             return json.load(response)
     except HTTPError as error:
-        if error.code == 404:
+        if error.code == HTTPStatus.NOT_FOUND:
             raise ValueError("Package or version not found") from error
         raise ValueError(f"Repository returned HTTP {error.code}") from error
     except URLError as error:
