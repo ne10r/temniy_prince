@@ -41,7 +41,7 @@ def repository_server():
     class Handler(BaseHTTPRequestHandler):
         """Return a configured status and JSON body for each path."""
 
-        def do_GET(self):
+        def do_get(self):
             """Serve one metadata request."""
             requested.append(self.path)
             status, data = routes.get(self.path, (404, {}))
@@ -55,6 +55,8 @@ def repository_server():
 
         def log_message(self, *args):
             """Keep test output free of HTTP access logs."""
+
+    setattr(Handler, "do_GET", Handler.do_get)
 
     with ThreadingHTTPServer(("127.0.0.1", 0), Handler) as server:
         thread = Thread(target=server.serve_forever, daemon=True)
