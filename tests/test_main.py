@@ -18,27 +18,35 @@ def run_app(*args):
 
 
 def test_successful_output(config_file, repository_server):
-    """Print direct dependencies from the configured release URL."""
+    """Print root and child adjacency lists from release metadata."""
     base, routes, requested = repository_server
-    dependencies = ["urllib3<3,>=1.21.1", 'extra-lib; extra == "test"']
+    dependencies = ["child>=1", 'extra-lib; extra == "test"']
     routes["/pypi/requests/2.32.3/json"] = (
         200, {"info": {"requires_dist": dependencies}}
     )
+    for name in ["child", "extra-lib"]:
+        routes[f"/pypi/{name}/json"] = (200, {"info": {}})
     path = config_file(repository=base)
     result = run_app("--config", str(path))
     assert result.returncode == 0
     assert result.stderr == ""
-    assert result.stdout.splitlines() == dependencies
-    assert requested == ["/pypi/requests/2.32.3/json"]
+    assert result.stdout.splitlines() == [
+        "requests -> child, extra-lib", "child -> (none)",
+        "extra-lib -> (none)",
+    ]
+    assert requested == [
+        "/pypi/requests/2.32.3/json", "/pypi/child/json",
+        "/pypi/extra-lib/json",
+    ]
 
 
 def test_empty_release(config_file, repository_server):
-    """Explain when the release declares no dependencies."""
+    """Keep a release without dependencies as a leaf vertex."""
     base, routes, _ = repository_server
     routes["/pypi/requests/2.32.3/json"] = (200, {"info": {}})
     result = run_app("--config", str(config_file(repository=base)))
     assert result.returncode == 0
-    assert result.stdout == "No direct dependencies declared.\n"
+    assert result.stdout == "requests -> (none)\n"
     assert result.stderr == ""
 
 
@@ -62,31 +70,38 @@ def test_repository_error(
 
 
 def test_local_repository():
-    """Print only the direct test neighbours, without following B or C."""
+    """Print reachable vertices including the shared dependency D."""
     result = run_app("--config", "configs/test.csv")
     assert result.returncode == 0
-    assert result.stdout.splitlines() == ["B", "C"]
+    assert result.stdout.splitlines() == [
+        "A -> B, C", "B -> D", "D -> (none)", "C -> D",
+    ]
     assert result.stderr == ""
 
 
 @pytest.mark.parametrize("version,dependency", [
-    ("1.0", "core<2"), ("2.0", "core>=2"),
+    ("1.0", "old-core"), ("2.0", "new-core"),
 ])
 def test_version_changes_dependencies(
     config_file, repository_server, version, dependency
 ):
     """Select the requested release rather than the latest release."""
     base, routes, requested = repository_server
-    for release, requirement in [("1.0", "core<2"), ("2.0", "core>=2")]:
+    for release, requirement in [("1.0", "old-core"), ("2.0", "new-core")]:
         routes[f"/pypi/requests/{release}/json"] = (
             200, {"info": {"requires_dist": [requirement]}}
         )
+        routes[f"/pypi/{requirement}/json"] = (200, {"info": {}})
     path = config_file(repository=base, version=version)
     result = run_app("--config", str(path))
     assert result.returncode == 0
-    assert result.stdout.splitlines() == [dependency]
+    assert result.stdout.splitlines() == [
+        f"requests -> {dependency}", f"{dependency} -> (none)",
+    ]
     assert result.stderr == ""
-    assert requested == [f"/pypi/requests/{version}/json"]
+    assert requested == [
+        f"/pypi/requests/{version}/json", f"/pypi/{dependency}/json",
+    ]
 
 
 @pytest.mark.parametrize("field,value", [

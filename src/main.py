@@ -5,25 +5,25 @@ import csv
 import sys
 
 from .config import load_config
-from .repository import get_dependencies
+from .graph import load_graph
 
 EXIT_SUCCESS = 0
 EXIT_ERROR = 1
 
 
-def print_dependencies(dependencies: list[str]) -> None:
-    """Print one declared dependency per line or an empty-list message."""
-    if not dependencies:
-        print("No direct dependencies declared.")
-        return
-    for dependency in dependencies:
-        print(dependency)
+def print_graph(graph: dict, cycles: list) -> None:
+    """Print adjacency lists and the cycles found during the walk."""
+    for package, dependencies in graph.items():
+        neighbours = ", ".join(dependencies) or "(none)"
+        print(f"{package} -> {neighbours}")
+    for cycle in cycles:
+        print("Cycle: " + " -> ".join(cycle))
 
 
 def main() -> int:
-    """Load the config, fetch release metadata and print dependencies."""
+    """Load the config, build the dependency graph and print it."""
     parser = argparse.ArgumentParser(
-        description="Direct package dependencies, variant 21, stage 2"
+        description="Dependency graph with iterative DFS, variant 21, stage 3"
     )
     parser.add_argument(
         "--config",
@@ -34,12 +34,12 @@ def main() -> int:
 
     try:
         config = load_config(args.config)
-        dependencies = get_dependencies(config)
+        graph, cycles = load_graph(config)
     except (OSError, UnicodeError, csv.Error, ValueError) as error:
         print(f"Error: {error}", file=sys.stderr)
         return EXIT_ERROR
 
-    print_dependencies(dependencies)
+    print_graph(graph, cycles)
     return EXIT_SUCCESS
 
 

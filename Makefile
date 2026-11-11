@@ -10,4 +10,4 @@ test:
 	$(PYTHON) -m pytest tests/ -q
 
 demo:
-	$(PYTHON) scripts/demo_stage2.py
+	$(PYTHON) scripts/demo_stage3.py
