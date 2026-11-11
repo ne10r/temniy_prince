@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 def run_app(*args):
     """Run the CLI from the repository root."""
     return subprocess.run(
-        [sys.executable, "-m", "src.main", *args],
+        [sys.executable, "-m", "src.main", "--graph", *args],
         cwd=ROOT, capture_output=True, text=True, timeout=10
     )
 

@@ -1,0 +1,2 @@
+python-dateutil==2.9.0.post0
+└── six [required: >=1.5, installed: 1.17.0]

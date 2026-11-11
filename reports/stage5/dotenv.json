@@ -1,0 +1,43 @@
+{
+  "same_graph": false,
+  "only_in_graph": [
+    "click"
+  ],
+  "only_in_reference": [],
+  "extra_edges": [
+    [
+      "python-dotenv",
+      "click"
+    ]
+  ],
+  "missing_edges": [],
+  "package": "python-dotenv",
+  "version": "1.0.1",
+  "recorded_at": "2026-11-11T05:30:09.774260+00:00",
+  "python": "3.9.6",
+  "graph": {
+    "python-dotenv": [
+      "click"
+    ],
+    "click": []
+  },
+  "reference_graph": {
+    "python-dotenv": []
+  },
+  "d2_source": "examples/visualizations/dotenv.d2",
+  "image": "examples/visualizations/dotenv.svg",
+  "reference": {
+    "tree": [
+      {
+        "key": "python-dotenv",
+        "package_name": "python-dotenv",
+        "installed_version": "1.0.1",
+        "required_version": "1.0.1",
+        "dependencies": []
+      }
+    ],
+    "text": "python-dotenv==1.0.1\n",
+    "pip_stdout": "Collecting python-dotenv==1.0.1\n  Using cached python_dotenv-1.0.1-py3-none-any.whl (19 kB)\nInstalling collected packages: python-dotenv\nSuccessfully installed python-dotenv-1.0.1\n",
+    "pipdeptree_version": "2.23.4"
+  }
+}

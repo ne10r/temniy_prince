@@ -1,0 +1,47 @@
+{
+  "same_graph": true,
+  "only_in_graph": [],
+  "only_in_reference": [],
+  "extra_edges": [],
+  "missing_edges": [],
+  "package": "python-dateutil",
+  "version": "2.9.0.post0",
+  "recorded_at": "2026-11-11T05:30:06.493348+00:00",
+  "python": "3.9.6",
+  "graph": {
+    "python-dateutil": [
+      "six"
+    ],
+    "six": []
+  },
+  "reference_graph": {
+    "python-dateutil": [
+      "six"
+    ],
+    "six": []
+  },
+  "d2_source": "examples/visualizations/dateutil.d2",
+  "image": "examples/visualizations/dateutil.svg",
+  "reference": {
+    "tree": [
+      {
+        "key": "python-dateutil",
+        "package_name": "python-dateutil",
+        "installed_version": "2.9.0.post0",
+        "required_version": "2.9.0.post0",
+        "dependencies": [
+          {
+            "key": "six",
+            "package_name": "six",
+            "installed_version": "1.17.0",
+            "required_version": ">=1.5",
+            "dependencies": []
+          }
+        ]
+      }
+    ],
+    "text": "python-dateutil==2.9.0.post0\n└── six [required: >=1.5, installed: 1.17.0]\n",
+    "pip_stdout": "Collecting python-dateutil==2.9.0.post0\n  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)\nCollecting six>=1.5\n  Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nInstalling collected packages: six, python-dateutil\nSuccessfully installed python-dateutil-2.9.0.post0 six-1.17.0\n",
+    "pipdeptree_version": "2.23.4"
+  }
+}

@@ -1,5 +1,5 @@
 PYTHON ?= python3
-CONFIG ?= configs/pypi.csv
+CONFIG ?= configs/dateutil.csv
 
 .PHONY: run order test demo
 
@@ -10,7 +10,7 @@ test:
 	$(PYTHON) -m pytest tests/ -q
 
 demo:
-	$(PYTHON) scripts/demo_stage4.py
+	$(PYTHON) -m scripts.demo_stage5
 
 order:
 	$(PYTHON) -m src.main --config "$(CONFIG)" --order
