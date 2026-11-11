@@ -56,7 +56,8 @@ def main() -> int:
             json.dumps(comparison, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8"
         )
-    except (OSError, ValueError, csv.Error, subprocess.SubprocessError) as error:
+    except (OSError, ValueError, csv.Error,
+            subprocess.SubprocessError) as error:
         print(f"Error: {error}", file=sys.stderr)
         return 1
     print(f"Comparison saved: {output}")
