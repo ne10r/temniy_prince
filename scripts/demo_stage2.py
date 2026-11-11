@@ -24,7 +24,7 @@ RELEASES = {
 class RepositoryHandler(BaseHTTPRequestHandler):
     """Serve several releases and two deliberately broken responses."""
 
-    def do_GET(self) -> None:
+    def do_get(self) -> None:
         """Return release JSON, invalid JSON or an HTTP error."""
         data = RELEASES.get(self.path)
         status = 200 if data is not None else 404
@@ -38,6 +38,9 @@ class RepositoryHandler(BaseHTTPRequestHandler):
 
     def log_message(self, *args) -> None:
         """Hide routine HTTP access logs during the demonstration."""
+
+
+setattr(RepositoryHandler, "do_GET", RepositoryHandler.do_get)
 
 
 def run_example(
