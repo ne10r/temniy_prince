@@ -1,0 +1,2 @@
+package,repository,test_mode,version
+python-dateutil,https://pypi.org/pypi,false,2.9.0.post0

@@ -1,0 +1,18 @@
+
+Example: test
+D -> B -> C -> A
+
+Example: leaf
+A
+
+Example: disconnected
+B -> A
+
+Example: cycle
+Error: Cannot order a cycle: C -> A
+
+Example: self_cycle
+Error: Cannot order a cycle: A -> A
+
+Example: missing
+Error: Missing test package: Z (A)

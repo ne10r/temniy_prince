@@ -1,0 +1,32 @@
+{
+  "our_order": [
+    "six",
+    "python-dateutil"
+  ],
+  "pip_order": [
+    "six",
+    "python-dateutil"
+  ],
+  "same_order": true,
+  "only_in_graph": [],
+  "only_in_pip": [],
+  "reversed_shared_edges": [],
+  "package": "python-dateutil",
+  "version": "2.9.0.post0",
+  "recorded_at": "2026-11-11T05:21:02.912480+00:00",
+  "python": "3.9.6",
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "graph": {
+    "python-dateutil": [
+      "six"
+    ],
+    "six": []
+  },
+  "pip_stdout": "Collecting python-dateutil==2.9.0.post0\n  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)\nCollecting six>=1.5\n  Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)\nInstalling collected packages: six, python-dateutil\nSuccessfully installed python-dateutil-2.9.0.post0 six-1.17.0\n",
+  "notes": [
+    "Graph includes conditional and optional declarations.",
+    "Child versions in the graph use latest release metadata.",
+    "pip evaluates markers and resolves compatible versions.",
+    "Independent packages may have different valid orders."
+  ]
+}

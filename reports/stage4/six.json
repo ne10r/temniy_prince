@@ -1,0 +1,27 @@
+{
+  "our_order": [
+    "six"
+  ],
+  "pip_order": [
+    "six"
+  ],
+  "same_order": true,
+  "only_in_graph": [],
+  "only_in_pip": [],
+  "reversed_shared_edges": [],
+  "package": "six",
+  "version": "1.17.0",
+  "recorded_at": "2026-11-11T05:21:06.007013+00:00",
+  "python": "3.9.6",
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "graph": {
+    "six": []
+  },
+  "pip_stdout": "Collecting six==1.17.0\n  Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)\nInstalling collected packages: six\nSuccessfully installed six-1.17.0\n",
+  "notes": [
+    "Graph includes conditional and optional declarations.",
+    "Child versions in the graph use latest release metadata.",
+    "pip evaluates markers and resolves compatible versions.",
+    "Independent packages may have different valid orders."
+  ]
+}

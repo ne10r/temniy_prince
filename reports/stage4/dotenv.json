@@ -1,0 +1,33 @@
+{
+  "our_order": [
+    "click",
+    "python-dotenv"
+  ],
+  "pip_order": [
+    "python-dotenv"
+  ],
+  "same_order": false,
+  "only_in_graph": [
+    "click"
+  ],
+  "only_in_pip": [],
+  "reversed_shared_edges": [],
+  "package": "python-dotenv",
+  "version": "1.0.1",
+  "recorded_at": "2026-11-11T05:21:05.290950+00:00",
+  "python": "3.9.6",
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "graph": {
+    "python-dotenv": [
+      "click"
+    ],
+    "click": []
+  },
+  "pip_stdout": "Collecting python-dotenv==1.0.1\n  Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)\nInstalling collected packages: python-dotenv\nSuccessfully installed python-dotenv-1.0.1\n",
+  "notes": [
+    "Graph includes conditional and optional declarations.",
+    "Child versions in the graph use latest release metadata.",
+    "pip evaluates markers and resolves compatible versions.",
+    "Independent packages may have different valid orders."
+  ]
+}
