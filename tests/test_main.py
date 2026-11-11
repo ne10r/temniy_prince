@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
+ARGUMENT_ERROR_EXIT_CODE = 2
 
 
 def run_app(*args):
@@ -55,7 +56,7 @@ def test_missing_config_error(tmp_path):
 def test_unknown_argument():
     """Do not accept package settings outside the CSV file."""
     result = run_app("--package", "requests")
-    assert result.returncode == 2
+    assert result.returncode == ARGUMENT_ERROR_EXIT_CODE
 
 
 def test_help():
